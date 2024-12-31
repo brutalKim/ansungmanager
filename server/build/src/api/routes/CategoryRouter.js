@@ -4,6 +4,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const express_2 = __importDefault(require("./loaders/express"));
-const app = (0, express_1.default)();
-(0, express_2.default)(app);
+const router = express_1.default.Router();
+//카테고리 라우터
+router.route('')
+    .get((res, req) => {
+})
+    .post((req, res) => {
+})
+    .delete((req, res) => {
+});
+exports.default = router;
