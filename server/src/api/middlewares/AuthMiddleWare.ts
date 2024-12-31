@@ -1,7 +1,8 @@
 import { Request , Response , NextFunction } from "express";
-import { verifyAccessToken } from "../../utils/JWTmanager";
+import { verifyAccessToken } from "../../utils/jwtManager";
 
-const AuthMiddleware = (req: Request, res: Response, next: NextFunction):void=>{
+
+export const AuthMiddleware = (req: Request, res: Response, next: NextFunction):void=>{
     const accessToken : string|undefined = req.header('Authorization')?.split(' ')[1];
     
     if(!accessToken){
@@ -17,6 +18,5 @@ const AuthMiddleware = (req: Request, res: Response, next: NextFunction):void=>{
         console.log(error);
         return;
     }
-
     next();
 }

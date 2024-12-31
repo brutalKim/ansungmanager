@@ -10,14 +10,15 @@ const SECRETKEY:string = process.env.JWT_SECRETKEY || 'defaultKey';
 const ACCESS_EXPIRE:string = process.env.JWT_ACCESS_EXPIRE || '1d';
 const REFRESH_EXPIRE:string = process.env.JWT_REFRESH_EXPIRE || '1d';
 
-export const IssueAccessToken=(manager:Manager):string=>{
+export const issueAccessToken=(manager:Manager):string=>{
     return jwt.sign({id:manager.id , name:manager.name}, SECRETKEY , {expiresIn: ACCESS_EXPIRE});
 }
 
-export const IssueRefreshToken = (manager:Manager):string=>{
-    return jwt.sign({id:manager.id}, SECRETKEY , {expiresIn: REFRESH_EXPIRE});
+export const issueRefreshToken = (manager:Manager):string=>{
+    return jwt.sign({id:manager.id , name:manager.name}, SECRETKEY , {expiresIn: REFRESH_EXPIRE});
 }
 
+//엑세스 토큰 유효성 검사
 export const verifyAccessToken=(token:string):Manager=>{
     try{
         return jwt.verify(token, SECRETKEY) as Manager;
@@ -26,12 +27,16 @@ export const verifyAccessToken=(token:string):Manager=>{
         throw err;
     }
 }
-
-export const verifyRefreshToken = (token:string)=>{
+//리프래시 토큰 유효성 검사
+export const verifyRefreshToken = (manager:Manager , refreshToken:string):boolean=>{
     try{
-        return jwt.verify(token, SECRETKEY);
+        const payload:Manager = jwt.verify(refreshToken, SECRETKEY) as Manager;
+        //리프레시 토큰의 id 와 검사할 id가 같을 경우 유효성 검사 통과
+        if(payload.id === manager.id) return true;
+        //실패시 false 반환
+        return false;
     }catch(err){
-        console.error(err);
-        throw err;
+        //유효기간이나 malform 검사
+        return false;
     }
 }
