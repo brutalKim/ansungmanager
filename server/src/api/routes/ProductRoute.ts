@@ -7,7 +7,12 @@ const router = express.Router();
 //상품 router
 router.route('')
 .get(async (req,res)=>{
-
+    try {
+        const products:Product[] = await productService.getProduct();
+        res.status(200).send(products);
+    } catch (error) {
+        res.status(500).send();
+    }
 })
 .post(async (req,res)=>{
     const product:Product = convertProduct(req.body);
@@ -27,14 +32,25 @@ router.route('')
     }
 })
 .delete(async (req,res)=>{
-
+    
 })
 .patch(async (req,res)=>{
-
+    const product:Product = convertProduct(req.body);
+    //badrequestERr
+    if(!product.no){res.status(400).send();return;}
+    
+    try {
+        await productService.updateProduct(product);
+        res.status(200).send();
+    } catch (error) {
+        res.status(500).send();
+        return;
+    }
 })
 
 //body데이터 product type생성
 const convertProduct = (body:any) : Product=>{
+    const no:number = body.no;
     const name:string = body.name;
     const category:number = body.category;
     const purchase_price:number = body.purchase_price;
@@ -43,6 +59,7 @@ const convertProduct = (body:any) : Product=>{
     const size:string = body.size;
 
     const product:Product ={
+        no:no,
         name: name,
         category:category,
         purchase_price: purchase_price,

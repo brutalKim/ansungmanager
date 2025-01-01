@@ -6,5 +6,5 @@ export interface ProductInterface{
     getProduct():Promise<Product[]>;
     addProduct(product:Product):Promise<void>;
     updateProduct(product:Product):Promise<void>;
-    deleteProduct(product:Product):Promise<void>;
+    deleteProduct(no:number):Promise<void>;
 }

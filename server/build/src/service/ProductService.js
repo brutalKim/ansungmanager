@@ -16,7 +16,14 @@ const ProductRepository_1 = __importDefault(require("../db/Repository/Product/Pr
 class ProductService {
     getProduct() {
         return __awaiter(this, void 0, void 0, function* () {
-            throw new Error("Method not implemented.");
+            try {
+                const products = yield ProductRepository_1.default.getProduct();
+                return products;
+            }
+            catch (error) {
+                console.error(error);
+                throw error;
+            }
         });
     }
     addProduct(product) {
@@ -32,12 +39,32 @@ class ProductService {
     }
     updateProduct(product) {
         return __awaiter(this, void 0, void 0, function* () {
-            throw new Error("Method not implemented.");
+            try {
+                if (product.no) {
+                    let target = (yield ProductRepository_1.default.findByNo(product.no))[0];
+                    // 입력된 product 객체의 값이 존재하는 필드만 target 객체에 업데이트
+                    if (product.name)
+                        target.name = product.name;
+                    if (product.category)
+                        target.category = product.category;
+                    if (product.purchase_price)
+                        target.purchase_price = product.purchase_price;
+                    if (product.sale_price)
+                        target.sale_price = product.sale_price;
+                    if (product.stock)
+                        target.stock = product.stock;
+                    if (product.size)
+                        target.size = product.size;
+                    yield ProductRepository_1.default.updateProduct(target);
+                }
+            }
+            catch (error) {
+                console.error(error);
+            }
         });
     }
-    deleteProduct(product) {
+    deleteProduct(no) {
         return __awaiter(this, void 0, void 0, function* () {
-            throw new Error("Method not implemented.");
         });
     }
 }

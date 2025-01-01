@@ -16,9 +16,9 @@ type Category={
 }
 
 type Customer={
-    no:number;
-    name:string | null;
-    address:string;
+    no?:number;
+    name?:string;
+    address?:string;
     tel:string;
 }
 

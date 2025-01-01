@@ -16,7 +16,20 @@ class ProductRepository {
         return __awaiter(this, void 0, void 0, function* () {
             const query = "SELECT * FROM product WHERE category = ?";
             try {
-                const [rows] = yield Connection_1.pool.query(query, category.no);
+                const [rows] = yield Connection_1.pool.query(query, [category.no]);
+                return rows;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    //번호로 상품 조회
+    findByNo(no) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const query = "SELECT * FROM product WHERE no = ?";
+            try {
+                const [rows] = yield Connection_1.pool.query(query, [no]);
                 return rows;
             }
             catch (error) {
@@ -28,7 +41,7 @@ class ProductRepository {
     addProduct(product) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a, _b, _c;
-            const query = "INSERT INTO product (name , category , purchase_price , sale_price , stock , size) VALUES (?,?,?,?,?,?)";
+            const query = "INSERT INTO product (name , category , purchase_price , sale_price , stock , size) VALUES (? , ? , ? , ? , ? , ?)";
             const params = [product.name, (_a = product.category) !== null && _a !== void 0 ? _a : null, product.purchase_price, product.sale_price, (_b = product.stock) !== null && _b !== void 0 ? _b : 0, (_c = product.size) !== null && _c !== void 0 ? _c : null];
             try {
                 yield Connection_1.pool.execute(query, params);
@@ -49,6 +62,25 @@ class ProductRepository {
             catch (error) {
                 throw error;
             }
+        });
+    }
+    //상품 수정
+    updateProduct(product) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a, _b, _c;
+            const query = "UPDATE product SET name = ? , category = ? ,purchase_price = ? , sale_price = ? , stock = ? , size = ? WHERE no = ?";
+            const params = [product.name, (_a = product.category) !== null && _a !== void 0 ? _a : null, product.purchase_price, product.sale_price, (_b = product.stock) !== null && _b !== void 0 ? _b : 0, (_c = product.size) !== null && _c !== void 0 ? _c : null, product.no];
+            try {
+                yield Connection_1.pool.execute(query, params);
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    deleteProduct(no) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const query = "";
         });
     }
 }

@@ -18,6 +18,13 @@ const router = express_1.default.Router();
 //상품 router
 router.route('')
     .get((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const products = yield ProductService_1.default.getProduct();
+        res.status(200).send(products);
+    }
+    catch (error) {
+        res.status(500).send();
+    }
 }))
     .post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const product = convertProduct(req.body);
@@ -40,9 +47,24 @@ router.route('')
     .delete((req, res) => __awaiter(void 0, void 0, void 0, function* () {
 }))
     .patch((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const product = convertProduct(req.body);
+    //badrequestERr
+    if (!product.no) {
+        res.status(400).send();
+        return;
+    }
+    try {
+        yield ProductService_1.default.updateProduct(product);
+        res.status(200).send();
+    }
+    catch (error) {
+        res.status(500).send();
+        return;
+    }
 }));
 //body데이터 product type생성
 const convertProduct = (body) => {
+    const no = body.no;
     const name = body.name;
     const category = body.category;
     const purchase_price = body.purchase_price;
@@ -50,6 +72,7 @@ const convertProduct = (body) => {
     const stock = body.stock;
     const size = body.size;
     const product = {
+        no: no,
         name: name,
         category: category,
         purchase_price: purchase_price,
