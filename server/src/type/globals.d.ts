@@ -1,5 +1,6 @@
 //전역 type
 
+import { LargeNumberLike } from 'crypto';
 import { Request } from 'express';
 
 type Manager={
@@ -9,9 +10,9 @@ type Manager={
 };
 
 type Category={
-    no:number;
+    no?:number;
     name:string;
-    description:string;
+    description?:string;
 }
 
 type Customer={
@@ -37,6 +38,16 @@ type Salelog={
     manager:string;
     quantity:number;
     date:string;
+}
+
+type Product = {
+  no?:number;
+  category?:number;
+  name:string;
+  purchase_price:number;
+  sale_price:number;
+  stock?:number;
+  size?:string;
 }
 
 declare global {

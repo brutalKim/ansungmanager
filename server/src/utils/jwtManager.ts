@@ -20,7 +20,7 @@ export const issueRefreshToken = (manager:Manager):string=>{
     const refreshToken:string = jwt.sign({id:manager.id , name:manager.name}, SECRETKEY , {expiresIn: REFRESH_EXPIRE});
     //토큰 저장
     authManager.storeRefreshToken(manager , refreshToken);
-    
+
     return "Bearer " + refreshToken;
 }
 
@@ -29,20 +29,18 @@ export const verifyAccessToken=(token:string):Manager=>{
     try{
         return jwt.verify(token, SECRETKEY) as Manager;
     }catch(err){
-        console.error(err);
         throw err;
     }
 }
 //리프래시 토큰 유효성 검사
-export const verifyRefreshToken = (manager:Manager , refreshToken:string):boolean=>{
+export const refreshAccessToken = (refreshToken:string):string=>{
     try{
         const payload:Manager = jwt.verify(refreshToken, SECRETKEY) as Manager;
         //리프레시 토큰의 id 와 검사할 id가 같을 경우 유효성 검사 통과
-        if(payload.id === manager.id) return true;
-        //실패시 false 반환
-        return false;
+        const newAccessToken:string = authManager.refreshAccessToken(payload,refreshToken);
+        return newAccessToken;
     }catch(err){
         //유효기간이나 malform 검사
-        return false;
+        throw err;
     }
 }

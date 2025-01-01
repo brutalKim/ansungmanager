@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const ManagerRepository_1 = __importDefault(require("../db/Repository/Manager.ts/ManagerRepository"));
+const ManagerRepository_1 = __importDefault(require("../db/Repository/Manager/ManagerRepository"));
 const ManagerInterface_1 = require("../interface/ManagerInterface");
 const passwordUtils_1 = require("../type/passwordUtils");
 const jwtManager_1 = require("../utils/jwtManager");

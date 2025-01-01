@@ -45,6 +45,12 @@ router.post('/login',async (req,res)=>{
             res.status(500).send();
             return;
         case Status.SUCCESS:
+            res.cookie('refreshToken',DTO.refreshToken,{
+                //javascript로 접근 불가 설정
+                httpOnly:true,
+                //유효기간
+                maxAge:1000 * 60 * 60 * 24 * 7
+            })
             res.status(200).send(DTO);
             return;
     }

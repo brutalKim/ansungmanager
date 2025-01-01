@@ -19,16 +19,17 @@ class AuthManager {
     //액세스 토큰 재발급
     refreshAccessToken(manager, refreshToken) {
         try {
-            const valid = (0, jwtManager_1.verifyRefreshToken)(manager, refreshToken);
-            if (valid) {
+            const storedRefreshToken = this.tokenStore.get(manager.id);
+            if (storedRefreshToken === refreshToken) {
                 return (0, jwtManager_1.issueAccessToken)(manager);
             }
-            return false;
+            let missingErr = new Error();
+            missingErr.name = 'MissingRefreshToken';
+            throw missingErr;
         }
         catch (error) {
-            console.error(error);
             __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_deleteRefreshToken).call(this, manager);
-            return false;
+            throw error;
         }
     }
 }

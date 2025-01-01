@@ -1,5 +1,5 @@
 import { Manager } from '../type/globals';
-import { issueAccessToken, verifyRefreshToken } from '../utils/jwtManager';
+import { issueAccessToken } from '../utils/jwtManager';
 
 class AuthManager{
     //임시 해시맵 이용 추후 redis or database이용으로 수정
@@ -12,17 +12,18 @@ class AuthManager{
         this.tokenStore.set(manager.id,refreshToken);
     }
     //액세스 토큰 재발급
-    refreshAccessToken(manager:Manager , refreshToken:string):string|boolean{
+    refreshAccessToken(manager:Manager , refreshToken:string):string{
         try {
-            const valid:boolean = verifyRefreshToken(manager, refreshToken);
-            if(valid){
+            const storedRefreshToken = this.tokenStore.get(manager.id);
+            if(storedRefreshToken === refreshToken ){
                 return issueAccessToken(manager);
             }
-            return false;
+            let missingErr = new Error();
+            missingErr.name = 'MissingRefreshToken'
+            throw missingErr;
         } catch (error) {
-            console.error(error);
             this.#deleteRefreshToken(manager);
-            return false;
+            throw error;
         }
     }
     //private 리프래시 토큰 삭제

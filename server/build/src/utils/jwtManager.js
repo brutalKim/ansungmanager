@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyRefreshToken = exports.verifyAccessToken = exports.issueRefreshToken = exports.issueAccessToken = void 0;
+exports.refreshAccessToken = exports.verifyAccessToken = exports.issueRefreshToken = exports.issueAccessToken = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const AuthService_1 = __importDefault(require("../service/AuthService"));
@@ -29,24 +29,21 @@ const verifyAccessToken = (token) => {
         return jsonwebtoken_1.default.verify(token, SECRETKEY);
     }
     catch (err) {
-        console.error(err);
         throw err;
     }
 };
 exports.verifyAccessToken = verifyAccessToken;
 //리프래시 토큰 유효성 검사
-const verifyRefreshToken = (manager, refreshToken) => {
+const refreshAccessToken = (refreshToken) => {
     try {
         const payload = jsonwebtoken_1.default.verify(refreshToken, SECRETKEY);
         //리프레시 토큰의 id 와 검사할 id가 같을 경우 유효성 검사 통과
-        if (payload.id === manager.id)
-            return true;
-        //실패시 false 반환
-        return false;
+        const newAccessToken = AuthService_1.default.refreshAccessToken(payload, refreshToken);
+        return newAccessToken;
     }
     catch (err) {
         //유효기간이나 malform 검사
-        return false;
+        throw err;
     }
 };
-exports.verifyRefreshToken = verifyRefreshToken;
+exports.refreshAccessToken = refreshAccessToken;

@@ -2,6 +2,7 @@ import { Manager } from "../../../type/globals";
 import { hashPW } from "../../../type/passwordUtils";
 import {pool} from "../../Connection";
 class ManagerRepository{
+    //관리자 정보 조회
     async getManager(manager:Manager):Promise<Manager[]>{
         try {
             const query:string = "SELECT * FROM manager WHERE id =?";
@@ -11,6 +12,7 @@ class ManagerRepository{
             throw error;
         }
     }
+    //관리자 생성
     async createManager(manager:Manager){
         try {
             const query:string ="INSERT INTO manager (id,pw,name) VALUES(?,?,?)";
@@ -22,6 +24,7 @@ class ManagerRepository{
             
         }
     }
+    //관리자삭제
     deleteManager(manager:Manager){
 
     }

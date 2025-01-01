@@ -1,4 +1,4 @@
-import managerRepository from "../db/Repository/Manager.ts/ManagerRepository";
+import managerRepository from "../db/Repository/Manager/ManagerRepository";
 import { LoginDTO, ManagerServiceInterface, Response, Status } from "../interface/ManagerInterface";
 import { Manager } from "../type/globals";
 import { hashPW, validPW } from "../type/passwordUtils";
