@@ -1,4 +1,3 @@
-import crypto from 'crypto'
 import { Manager } from '../type/globals';
 import { issueAccessToken, verifyRefreshToken } from '../utils/jwtManager';
 
@@ -8,11 +7,11 @@ class AuthManager{
     constructor(){
         this.tokenStore = new Map();
     }
-    
+    //리프래시 토큰저장
     storeRefreshToken(manager:Manager , refreshToken:string){
         this.tokenStore.set(manager.id,refreshToken);
     }
-
+    //액세스 토큰 재발급
     refreshAccessToken(manager:Manager , refreshToken:string):string|boolean{
         try {
             const valid:boolean = verifyRefreshToken(manager, refreshToken);
@@ -26,6 +25,7 @@ class AuthManager{
             return false;
         }
     }
+    //private 리프래시 토큰 삭제
     #deleteRefreshToken(manager:Manager){
         this.tokenStore.delete(manager.id);
     }

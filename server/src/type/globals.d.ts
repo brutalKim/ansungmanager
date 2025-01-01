@@ -5,7 +5,7 @@ import { Request } from 'express';
 type Manager={
     id:string;
     pw?:string;
-    name:string;
+    name?:string;
 };
 
 type Category={

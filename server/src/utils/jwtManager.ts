@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 
 import dotenv from 'dotenv';
 import { Manager } from '../type/globals';
+import authManager from '../service/AuthService';
 
 dotenv.config();
 
@@ -11,11 +12,16 @@ const ACCESS_EXPIRE:string = process.env.JWT_ACCESS_EXPIRE || '1d';
 const REFRESH_EXPIRE:string = process.env.JWT_REFRESH_EXPIRE || '1d';
 
 export const issueAccessToken=(manager:Manager):string=>{
-    return jwt.sign({id:manager.id , name:manager.name}, SECRETKEY , {expiresIn: ACCESS_EXPIRE});
+    return "Bearer " + jwt.sign({id:manager.id , name:manager.name}, SECRETKEY , {expiresIn: ACCESS_EXPIRE});
 }
 
 export const issueRefreshToken = (manager:Manager):string=>{
-    return jwt.sign({id:manager.id , name:manager.name}, SECRETKEY , {expiresIn: REFRESH_EXPIRE});
+    //리프레시 토큰 발급
+    const refreshToken:string = jwt.sign({id:manager.id , name:manager.name}, SECRETKEY , {expiresIn: REFRESH_EXPIRE});
+    //토큰 저장
+    authManager.storeRefreshToken(manager , refreshToken);
+    
+    return "Bearer " + refreshToken;
 }
 
 //엑세스 토큰 유효성 검사
