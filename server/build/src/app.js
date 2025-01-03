@@ -4,11 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const express_2 = __importDefault(require("./loaders/express"));
 const app = (0, express_1.default)();
-app.set("port", process.env.PORT || 3000);
-app.get("/", (req, res) => {
-    res.send("Hello World!");
-});
-app.listen(app.get("port"), () => {
-    console.log(app.get("port"), "번에서 대기중");
-});
+(0, express_2.default)(app);

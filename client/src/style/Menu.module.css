@@ -1,0 +1,35 @@
+.Menu{
+    display: flex;
+    justify-content: space-between;
+    margin:10px;
+    padding: 5px;
+    border-radius: 15px;
+    background-color: white;
+    #element{
+        display: flex;
+        width: 50%;
+        justify-content: space-around;
+        a{
+            font-weight: 600;
+            text-decoration: none;
+            color: black;
+            padding: 10px;
+            font-size: larger;
+            width: 130px;
+            text-align: center;
+            border-radius : 12px;
+        }
+        a:hover{
+            background-color:rgb(245, 245, 245);
+        }
+    }
+    #manager{
+        margin-right: 30px;
+        #name{
+            font-weight: 600;
+        }
+        #id{
+            color: gray;
+        }
+    }
+}
